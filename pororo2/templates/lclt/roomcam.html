@@ -1,0 +1,533 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LCLT</title>    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sidebars/">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    {% comment %} <link rel="stylesheet" href="{% static 'css/sidebars.css' %}"> {% endcomment %}
+    <style>
+        body {
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
+        }
+        
+        html {
+            height: -webkit-fill-available;
+        }
+        
+        main {
+            height: 100vh;
+            height: -webkit-fill-available;
+            max-height: 100vh;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+        
+        .dropdown-toggle {
+            outline: 0;
+        }
+        
+        .btn-toggle {
+            padding: .25rem .5rem;
+            font-weight: 600;
+            color: var(--bs-emphasis-color);
+            background-color: transparent;
+        }
+        
+        .btn-toggle:hover,
+        .btn-toggle:focus {
+            color: rgba(var(--bs-emphasis-color-rgb), .85);
+            background-color: var(--bs-tertiary-bg);
+        }
+        
+        .btn-toggle::before {
+            width: 1.25em;
+            line-height: 0;
+            content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%280,0,0,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
+            transition: transform .35s ease;
+            transform-origin: .5em 50%;
+        }
+        
+        [data-bs-theme="dark"] .btn-toggle::before {
+            content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%28255,255,255,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
+        }
+        
+        .btn-toggle[aria-expanded="true"] {
+            color: rgba(var(--bs-emphasis-color-rgb), .85);
+        }
+        
+        .btn-toggle[aria-expanded="true"]::before {
+            transform: rotate(90deg);
+        }
+        
+        .btn-toggle-nav a {
+            padding: .1875rem .5rem;
+            margin-top: .125rem;
+            margin-left: 1.25rem;
+        }
+        
+        .btn-toggle-nav a:hover,
+        .btn-toggle-nav a:focus {
+            background-color: var(--bs-tertiary-bg);
+        }
+        
+        .scrollarea {
+            overflow-y: auto;
+        }
+    </style>
+    <style>
+        .bd-placeholder-img {
+          font-size: 1.125rem;
+          text-anchor: middle;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          user-select: none;
+        }
+  
+        @media (min-width: 768px) {
+          .bd-placeholder-img-lg {
+            font-size: 3.5rem;
+          }
+        }
+  
+        .b-example-divider {
+          width: 100%;
+          height: 3rem;
+          background-color: rgba(0, 0, 0, .1);
+          border: solid rgba(0, 0, 0, .15);
+          border-width: 1px 0;
+          box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+        }
+  
+        .b-example-vr {
+          flex-shrink: 0;
+          width: 1.5rem;
+          height: 100vh;
+        }
+  
+        .bi {
+          vertical-align: -.125em;
+          fill: currentColor;
+        }
+  
+        .nav-scroller {
+          position: relative;
+          z-index: 2;
+          height: 2.75rem;
+          overflow-y: hidden;
+        }
+  
+        .nav-scroller .nav {
+          display: flex;
+          flex-wrap: nowrap;
+          padding-bottom: 1rem;
+          margin-top: -1px;
+          overflow-x: auto;
+          text-align: center;
+          white-space: nowrap;
+          -webkit-overflow-scrolling: touch;
+        }
+  
+        .btn-bd-primary {
+          --bd-violet-bg: #712cf9;
+          --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+  
+          --bs-btn-font-weight: 600;
+          --bs-btn-color: var(--bs-white);
+          --bs-btn-bg: var(--bd-violet-bg);
+          --bs-btn-border-color: var(--bd-violet-bg);
+          --bs-btn-hover-color: var(--bs-white);
+          --bs-btn-hover-bg: #6528e0;
+          --bs-btn-hover-border-color: #6528e0;
+          --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+          --bs-btn-active-color: var(--bs-btn-hover-color);
+          --bs-btn-active-bg: #5a23c8;
+          --bs-btn-active-border-color: #5a23c8;
+        }
+        .bd-mode-toggle {
+          z-index: 1500;
+        }
+        video {
+            transform: rotateY(180deg);
+        }
+        *{
+            overflow:hidden
+        }
+        #modalChoice{
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+        #sidebarB{
+            display :flex;
+        }
+        .modal-sheet .modal-dialog {
+            width: 380px;
+            transition: bottom .75s ease-in-out;
+          }
+          .modal-sheet .modal-footer {
+            padding-bottom: 2rem;
+          }
+      </style>
+     <script src="{% static 'js/sidebars.js' %}"></script> 
+
+
+<script>
+    function closeModal() {
+        modal.style.display = 'none';
+    }
+    function goout(){
+        window.location.href = '/allroom';
+    }
+</script></head>
+
+<body class="d-flex"> 
+    <div class=" flex-column align-items-stretch flex-shrink-0 bg-body-tertiary shadow-lg" id="sidebarB"style="width: 380px; height:100vh">
+        <a href="/" class="d-flex align-items-center flex-shrink-0 p-3 link-body-emphasis text-decoration-none border-bottom">
+      <img class="bi pe-none me-2" src="{% static '/images/lclt-icon.svg' %}" width="30" height="30"></img>
+      <span class="fs-5 fw-semibold">{{room.name}}</span>
+        </a>
+        <div class="list-group list-group-flush border-bottom scrollarea" id="sidebarC">
+        </div>
+    </div>
+    <div class="w-100">
+        <div class="d-flex flex-column h-100 w-100">
+            <div class="h-100 w-100 d-flex align-items-center justify-content-around">
+                <video id="video" style="object-fit:cover ; height:100%; " autoplay></video>
+            </div>
+            <div >
+                <header class="d-flex justify-content-center py-3 shadow-lg">
+                  <ul class="nav nav-pills">
+                    <li class="nav-item rounded-circle mx-1" style="width : 40px; height : 40px"><a href="#" id="mikeonoff" class="nav-link" aria-current="page">  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-mic-fill" viewBox="0 0 16 16">
+                        <path d="M5 3a3 3 0 0 1 6 0v5a3 3 0 0 1-6 0V3z"/>
+                        <path d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5z"/>
+                      </svg> </a></li>
+                    <li class="nav-item rounded-circle mx-1" style="width : 40px; height : 40px"><a href="#" id="camonoff"class="nav-link"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-camera-video-fill" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M0 5a2 2 0 0 1 2-2h7.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 4.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 13H2a2 2 0 0 1-2-2V5z"/>
+                      </svg></a></li>
+                    <li class="nav-item rounded-circle mx-1" style="width : 40px; height : 40px"><a href="#" id="fullscreen" class="nav-link"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"  class="bi bi-fullscreen" viewBox="0 0 16 16">
+                        <path d="M1.5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4A1.5 1.5 0 0 1 1.5 0h4a.5.5 0 0 1 0 1h-4zM10 .5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 16 1.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zM.5 10a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 0 14.5v-4a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5z"/>
+                      </svg></a></li>
+                    <li class="nav-item rounded-circle mx-1 " style="width : 40px; height : 40px "><a href="#" id="roomout1" class="nav-link"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+                        <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+                      </svg></a></li>
+                  </ul>
+                </header>
+            </div>
+        </div>
+        
+    </div><div class="modal modal-sheet p-4 py-md-5  align-items-center" tabindex="-1" role="dialog" id="modalChoice">
+        <div class="modal-dialog"role="document">
+            <div class="modal-content rounded-3 shadow">
+              <div class="modal-body p-4 text-center">
+                <h5 class="mb-0">나가기</h5>
+                <p class="mb-0">정말 나가시겠습니까?</p>
+              </div>
+              <div class="modal-footer flex-nowrap p-0">
+                <button type="button" onclick="goout()" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 py-3 m-0 rounded-0 border-end"><strong>예</strong></button>
+                <button type="button" onclick="closeModal()" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 py-3 m-0 rounded-0" data-bs-dismiss="modal">아니요</button>
+              </div>
+            </div>
+          </div>
+      </div>
+    
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var camonoff = document.getElementById("camonoff");
+        var mikeonoff = document.getElementById("mikeonoff");
+        var roomout = document.getElementById("roomout1");
+        var modal = document.getElementById("modalChoice");
+        (() => {
+        'use strict'
+        const tooltipTriggerList = Array.from(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        tooltipTriggerList.forEach(tooltipTriggerEl => {
+        new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+        })()
+
+
+
+        roomout.addEventListener("click",function(event){
+            event.preventDefault();
+            modal.style.display = 'flex';
+        });
+        window.onclick = function (event) {
+            if (event.target === modal) {
+                closeModal();
+            }
+        };
+        var roomout = document.getElementById("roomout1");
+        var modal = document.getElementById("modalChoice");
+        var fullscreen = document.getElementById("fullscreen");
+        var sidebarB = document.getElementById("sidebarB");
+        var sidebarC = document.getElementById("sidebarC");
+        var mapPeers = {};
+        var fullscreenToggle = 0;
+        var camonoffToggle = 0;
+            fullscreen.addEventListener("click",(event)=>{
+                if(fullscreenToggle%2 == 0){
+                    fullscreen.classList.add("active");
+                    sidebarB.style.display='none';
+                }else{
+                    fullscreen.classList.remove("active");
+                    sidebarB.style.display='flex';
+                }  
+                fullscreenToggle+=1;
+            });
+            var username = "{{user.username}}";
+            function webSocketOnMessage(event){
+                var parsedData = JSON.parse(event.data);
+        
+                var peerUsername = parsedData['peer'];
+                var action = parsedData['action'];
+        
+                if(username == peerUsername){
+                    return;
+                }
+                var receiver_channel_name = parsedData['message']['receiver_channel_name'];
+                if(action == 'new-peer'){
+                    createOfferer(peerUsername,receiver_channel_name);
+                    return;
+                }
+                if(action == 'out-peer'){
+                    console.log('누가 나갔습니다.')
+                    console.log(peerUsername);
+                    var peer = mapPeers[peerUsername][0];
+                    var iceConnectionState = peer.iceConnectionState;
+                    //if(iceConnectionState != 'closed'){
+                    //    peer.close();
+                    //}
+                    removeAll(peerUsername);
+                    delete mapPeers[peerUsername];
+                    return;
+                }
+                if(action == 'new-offer'){
+                    var offer = parsedData['message']['sdp'];
+                    createAnswer(offer,peerUsername,receiver_channel_name);
+                    return;
+                }
+                if(action == 'new-answer'){
+                    var answer = parsedData['message']['sdp'];
+                    var peer = mapPeers[peerUsername][0];
+                    peer.setRemoteDescription(answer);
+                    return;
+                }
+            }
+            var wsStart ='ws://';
+            if(window.location.protocol == 'https:'){
+                wsStart = 'wss://';
+            }
+            var endPoint = wsStart + window.location.host + window.location.pathname;
+            
+            var webSocket = new WebSocket(endPoint);
+            webSocket.addEventListener('open',(e)=>{
+                console.log('연결');
+                sendSignal('new-peer',{});
+            });
+            webSocket.addEventListener('message',(e)=>{
+                console.log("message")
+                webSocketOnMessage(e);
+            });
+            webSocket.addEventListener('close',(e)=>{
+                sendSignal('out-peer',{});
+                console.log('닫힘');
+            });
+            webSocket.addEventListener('error',(e)=>{
+                webSocketOnMessage(e);
+                console.log('에러 에러에러 ㅈ됬다 공습경보');
+            });
+            var localStream = new MediaStream();
+            const constrains = {
+                'video' : true,
+                'audio' : true
+            }
+            const localvideo = document.getElementById('video');
+        
+            var userMedia = navigator.mediaDevices.getUserMedia(constrains).then(stream => {
+                localStream = stream;
+                localvideo.srcObject = localStream;
+                localvideo.muted= true;
+                camonoff.classList.add("active");
+                mikeonoff.classList.add("active");
+                var audioTracks = stream.getAudioTracks();
+                var videoTracks = stream.getVideoTracks();
+                audioTracks[0].enabled = true;
+                videoTracks[0].enabled = true;
+                mikeonoff.addEventListener('click',()=>{
+                    audioTracks[0].enabled = !audioTracks[0].enabled;
+                    if(audioTracks[0].enabled){
+                        mikeonoff.classList.add("active");
+                        return;
+                    }
+                    mikeonoff.classList.remove("active");
+                });
+                camonoff.addEventListener('click',()=>{
+                    videoTracks[0].enabled = !videoTracks[0].enabled;
+                    if(videoTracks[0].enabled){
+                        camonoff.classList.add("active");
+                        return;
+                    }
+                    camonoff.classList.remove("active");
+                });
+            }).catch(error =>{
+                console.log(error);
+            });
+            
+        
+            async function sendSignal(action,message){
+                var jsonStr = JSON.stringify({
+                    'peer' : username,
+                    'action' : action,
+                    'message' : message,
+                })
+                await webSocket.send(jsonStr);
+            }
+            async function createOfferer(peerUsername,receiver_channel_name){
+                var peer = new RTCPeerConnection(null);
+                console.log(peer);
+                await addLocalTracks(peer);
+                var dc =await  peer.createDataChannel('channel');
+                await dc.addEventListener('open',()=>{
+                    //console.log("연결2");
+                })
+                await dc.addEventListener('message',dcOnMessage);
+                var remoteVideo = await createVideo(peerUsername);
+                //console.log(remoteVideo);
+                await setOnTrack(peer,remoteVideo);
+                mapPeers[peerUsername] = [peer,dc];
+                //console.log(mapPeers[peerUsername]);
+                await peer.addEventListener('iceconnectionstatechange',()=>{
+                    var iceConnectionState = peer.iceConnectionState;
+                    console.log(peer.iceConnectionState);
+                    if(iceConnectionState == 'failed' || iceConnectionState == 'disconnected' || iceConnectionState == 'closed'){
+                        // console.log('disconnected')
+                        //delete mapPeers[peerUsername];
+                        //if(iceConnectionState != 'closed'){
+                        //      peer.close();
+                        //}
+                        // removeVideo(remoteVideo);
+                    }
+                })
+        
+                await peer.addEventListener('icecandidate',(event)=>{
+                    if(event.candidate){
+                       // console.log(JSON.stringify(peer.localDescription));
+                        return;
+                    }
+                    sendSignal('new-offer',{
+                        'sdp' : peer.localDescription,
+                        'receiver_channel_name' : receiver_channel_name
+                    });
+                })
+                await peer.createOffer().then(o => peer.setLocalDescription(o))
+                .then(()=>{
+                    //console.log("성공");
+                })
+            }
+            async function createAnswer(offer,peerUsername,receiver_channel_name){
+                var peer = new RTCPeerConnection(null);
+                await addLocalTracks(peer);
+                var remoteVideo = await createVideo(peerUsername);
+                await setOnTrack(peer,remoteVideo);
+                await peer.addEventListener('datachannel',async e=>{
+                    peer.dc = e.channel;
+                    await peer.dc.addEventListener('open',()=>{
+                        //console.log("연결2");
+                    })
+                    await peer.dc.addEventListener('message',dcOnMessage);
+                    mapPeers[peerUsername] = [peer,peer.dc];
+                })
+                await peer.addEventListener('iceconnectionstatechange',()=>{
+                    var iceConnectionState = peer.iceConnectionState;
+                    if(iceConnectionState === 'failed' || iceConnectionState === 'disconnected' || iceConnectionState === 'closed'){
+                      //  delete mapPeers[peerUsername];
+                       // if(iceConnectionState != 'closed'){
+                      //      peer.close();
+                     //   }
+                     //   removeVideo(remoteVideo);
+                    }
+                })
+                await peer.addEventListener('icecandidate',async (event)=>{
+                    if(event.candidate){
+                       // console.log(JSON.stringify(peer.localDescription));
+                        return;
+                    }
+                    sendSignal('new-answer',{
+                        'sdp' : peer.localDescription,
+                        'receiver_channel_name' : receiver_channel_name
+                    });
+                })
+                await peer.setRemoteDescription(offer)
+                .then(()=>{
+                    //console.log(peerUsername);
+                    return peer.createAnswer();
+                }).then(a=>{
+                    peer.setLocalDescription(a);
+                });
+            }
+            async function addLocalTracks(peer){
+                await localStream.getTracks().forEach(track => {
+                    peer.addTrack(track,localStream);
+                });
+                return;
+            }
+        
+            function createVideo(peerUsername){
+                var listItem = document.createElement("div");
+                listItem.id = peerUsername;
+                listItem.classList.add("list-group-item", "list-group-item-action", "py-3", "lh-sm");
+            
+                // 아이템 내용을 추가합니다.
+                listItem.innerHTML = `
+                    <div class="d-flex w-100 align-items-center justify-content-between">
+                    <strong class="mb-1">${peerUsername}</strong>
+                    <small>${status}</small>
+                    </div>
+                    <div class="col-10 mb-1 small w-100 d-flex align-items-center  justify-content-around">
+                    <video id="${peerUsername}-video" style="object-fit: cover; height: 200px;" autoplay playsInline></video>
+                    </div>
+                `;
+                sidebarC.appendChild(listItem);
+                return document.getElementById(`${peerUsername}-video`);
+            }
+            async function setOnTrack(peer,remoteVideo){
+                var remoteStream = new MediaStream();
+                remoteVideo.srcObject = remoteStream;
+                await peer.addEventListener('track',async (event)=>{
+                await remoteStream.addTrack(event.track,remoteStream);
+                })
+            }
+            function dcOnMessage(event){
+        
+            }
+            function removeVideo(remoteVideo){
+                //console.log("삭제")
+                var videoWrapper = remoteVideo.parentNode.parentNode;
+                //console.log(videoWrapper);
+                videoWrapper.parentNode.removeChild(videoWrapper);
+                //videoWrapper..removeChild(videoWrapper);
+            }
+            function removeAll(peerid){
+                //console.log("removeAll")
+                var videoWrapper = document.getElementById(peerid);
+                videoWrapper.parentNode.removeChild(videoWrapper);
+            }
+    });
+   
+</script>
+</html>
